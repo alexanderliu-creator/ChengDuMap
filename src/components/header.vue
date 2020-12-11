@@ -66,7 +66,7 @@
             style="margin-top: 3px;"
           ></el-autocomplete> </el-col
       ></el-row>
-      <div class="avatar">
+      <div class="avatar" @click="checkState">
         <el-popover placement="bottom" width="400" trigger="click">
           <el-container>
             <el-aside width="width: 65px;" style="text-align: center;">
@@ -130,7 +130,7 @@
 
 <script>
 import Datalist from "../components/datalist"
-
+import {APIClient} from "../utils/client.js"
 export default {
   components: {
     Datalist
@@ -179,6 +179,10 @@ export default {
         {
           value: "8",
           label: "一月内"
+        },
+        {
+          value: "9",
+          label: "所有时间"
         }
       ],
       cateValue: this.$store.state.activeCate
@@ -196,6 +200,14 @@ export default {
         : options
       // 调用 callback 返回建议列表的数据
       cb(results)
+    },
+    checkState(){
+      APIClient.get("/getusercomment")
+          .then(() => {})
+          .catch(error => {
+            this.$router.push({path: "/login"})
+            alert("请先登录！");
+          })
     }
   },
   watch: {

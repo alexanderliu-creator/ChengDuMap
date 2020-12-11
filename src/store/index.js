@@ -6,7 +6,7 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     activeCate: ["0", "1", "2", "3", "4"],
-    activeDate: "8",
+    activeDate: "9",
     nodes: [],
     token: ""
   },
