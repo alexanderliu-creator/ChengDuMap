@@ -24,7 +24,7 @@
               :disabled="true"
               placeholder="验证码"
             ></el-input>
-            <el-button type="primary" :disabled="true" @click="sendCode">{{
+            <el-button type="primary" :disabled="true" @click="sendCode()">{{
               buttonText
             }}</el-button>
           </el-form-item>
@@ -124,12 +124,17 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
+          //console.log("valid!")
           APIClient.post("/login", {
             phone: this.ruleForm2["tel"],
             password: this.ruleForm2["pass"]
           })
             .then(response => {
+              //console.log("login success!")
+              //console.log(response)
               this.$store.commit("setToken", response)
+              //console.log(this.$store.state.token)
+              //console.log(document.cookie)
               this.$router.push({
                 path: "/"
               })
@@ -138,10 +143,10 @@ export default {
               this.setState({
                 errored: true
               })
-              console.log("响应失败:", error)
+              //console.log("响应失败:", error)
             })
         } else {
-          console.log("error submit!!")
+          //console.log("error submit!!")
           return false
         }
       })

@@ -85,6 +85,7 @@ import icon3 from "../assets/3.png"
 import icon4 from "../assets/4.png"
 import Datalist from "../components/datalist"
 import { APIClient } from "../utils/client.js"
+import {getDateValue} from "../utils/calcDate.js"
 
 let amapManager = new AMapManager()
 
@@ -106,15 +107,25 @@ export default {
       eventShow: false
     }
   },
+  mounted(){
+    lazyAMapApiLoaderInstance.load().then(() => {
+        this.map = new AMap.Map('amap-main', {center: new AMap.LngLat(104.0685779, 30.6613185)});
+      });
+  },
   created() {
+    let now = new Date()
     APIClient.get("/geteventlist")
       .then(response => {
         this.nodes = response.data.eventlist
+        for(const item of this.nodes){
+          item.difDate = getDateValue(item.startdate, now)
+          ////console.log(item)
+        }
         this.activeNodes = this.nodes
         this.$store.commit("setNodes", this.nodes)
       })
       .catch(error => {
-        console.log("响应失败:", error)
+        ////console.log("响应失败:", error)
       })
     // this.nodes[0] = {
     //   eventID: 1,
@@ -143,7 +154,16 @@ export default {
     "$store.state.activeCate": function(newVal, oldVal) {
       this.activeNodes = this.nodes
         .map(node => {
-          if (newVal.includes(node.cate)) return node
+          if (newVal.includes(node.cate) && node.difDate <= this.$store.state.activeDate) return node
+        })
+        .filter(res => {
+          return res != undefined
+        })
+    },
+    "$store.state.activeDate": function(newVal, oldVal){
+      this.activeNodes = this.nodes
+        .map(node => {
+          if (this.$store.state.activeCate.includes(node.cate) && node.difDate <= newVal) return node
         })
         .filter(res => {
           return res != undefined

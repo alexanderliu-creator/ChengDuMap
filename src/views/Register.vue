@@ -151,7 +151,7 @@ export default {
             alert("注册成功")
           }, 400)
         } else {
-          console.log("error submit!!")
+          ////console.log("error submit!!")
           return false
         }
       })

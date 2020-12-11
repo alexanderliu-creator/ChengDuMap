@@ -39,7 +39,7 @@
 
 <script>
 import { APIClient } from "../utils/client.js"
-
+import router from "../router"
 export default {
   props: ["type", "id"],
   data() {
@@ -56,7 +56,7 @@ export default {
             this.tableData = response.data.eventlist
           })
           .catch(error => {
-            console.log("响应失败:", error)
+            ////console.log("响应失败:", error)
           })
     },
     type(newVal, oldVal) {
@@ -66,7 +66,7 @@ export default {
             this.tableData = response.data.eventlist
           })
           .catch(error => {
-            console.log("响应失败:", error)
+            ////console.log("响应失败111:", error)
           })
     }
   },
@@ -83,11 +83,12 @@ export default {
               this.tableData = response.data.eventlist
             })
             .catch(error => {
-              console.log("响应失败:", error)
+              ////console.log("响应失败:", error)
             })
         })
         .catch(error => {
-          console.log("响应失败:", error)
+          alert("请先登录！");
+          this.$router.push({path: "/login"})
         })
     }
   }
